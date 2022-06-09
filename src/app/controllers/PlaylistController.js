@@ -44,12 +44,9 @@ class PlaylistController {
   async getPlaylists(req, res) {
     const { type } = req.query;
 
-    
     if(type === 'private') {
-      console.log(req.userId);
       req.query.user = req.userId;
     }
-    console.log('dsds', req.query);
 
     const populateProps = ({
       path: 'created_by',

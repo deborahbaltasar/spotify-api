@@ -12,7 +12,14 @@ const TracksSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Atributo "audio" obrigatório'],
     },
-
+    singers: {
+      type: String,
+      required: [true, 'Atributo "singers" obrigatório'],
+    },
+    duration: {
+      type: number,
+      required: [true, 'Atributo "duration" obrigatório'],
+    },
     playlists: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Playlist',
