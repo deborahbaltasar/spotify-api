@@ -42,33 +42,32 @@ class PlaylistController {
   }
 
   async getPlaylists(req, res) {
-    const playlists = await Playlist.paginate(req.query, {
+    const { type } = req.query;
+
+    
+    if(type === 'private') {
+      console.log(req.userId);
+      req.query.user = req.userId;
+    }
+    console.log('dsds', req.query);
+
+    const populateProps = ({
+      path: 'created_by',
+      select: 'name username email'
+    })
+    let playlists = await Playlist.paginate(req.query, {
       ...req.options,
-      select: '_id name cover type tracks',
+      select: '_id name cover type created_by',
+      populate: populateProps
+      
     });
+
     return res.json({
       data: playlists.docs,
       total: playlists.totalDocs,
     });
+
   }
-
-  // async getPlaylistsByStatus(req, res) {
-  //   const { user_id } = req.params;
-  //   const { type } = req.query;
-
-  //   if (!type) return console.log('n tem tipo');
-
-  //   const user = await User.findById(user_id);
-
-  //   const playlists = await Playlist.paginate(req.query, {
-  //     ...req.options,
-  //     select: '_id name cover type tracks',
-  //   });
-  //   return res.json({
-  //     data: playlists.docs,
-  //     total: playlists.totalDocs,
-  //   });
-  // }
 
   async deletePlaylist(req, res) {
     const { id } = req.params;
@@ -89,7 +88,7 @@ class PlaylistController {
       ...req.body,
     };
 
-    Plylist.findByIdAndUpdate(req.playlistId, update, { new: true })
+    Playlist.findByIdAndUpdate(req.playlistId, update, { new: true })
       .then(playlist => {
         if (!playlist) {
           return error(404, 'notFound', res, 'Playlist');

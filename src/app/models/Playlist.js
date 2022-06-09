@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 
 const PlaylistSchema = new mongoose.Schema(
   {
@@ -21,10 +19,11 @@ const PlaylistSchema = new mongoose.Schema(
       required: [true, 'Atributo "type" obrigatório'],
     },
 
-    tracks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tracks' }],
+    // tracks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tracks' }],
 
     created_by: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'User',
       required: [true, 'Atributo "created_by" obrigatório'],
     },
   },
@@ -32,5 +31,7 @@ const PlaylistSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+PlaylistSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Playlist', PlaylistSchema);

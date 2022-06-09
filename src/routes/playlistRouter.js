@@ -9,11 +9,9 @@ playlistRouter.post('/', PlaylistController.createPlaylist);
 
 playlistRouter.use(authMiddleware);
 
-playlistRouter.get('/:id', PlaylistController.getPlaylistById);
+// playlistRouter.get('/:id', PlaylistController.getPlaylistById);
 
 playlistRouter.get('/', PlaylistController.getPlaylists);
-
-// playlistRouter.get('/:user_id', PlaylistController.getPlaylistsByStatus);
 
 playlistRouter.delete('/:id', PlaylistController.deletePlaylist);
 
